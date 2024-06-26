@@ -7,31 +7,27 @@
 </form>
     <div class="card">
         <div class="card-body">
-            <h1>View State</h1>
+            <h1>View Product Image</h1>x
             <div class="table-responsive">
                 <table class="table table-bordered table-stripped">
                     <thead>
                         <tr>
                             <th>S.No.</th>
-                            <th>Name</th>
-                            <th>Short Name</th>
-                            <th>Code</th>
-                            <th>Country</th>
+                            <th>Image</th>
+                            <th>Product</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($states as $key => $state)
+                        @foreach ($productImgs as $key => $productImg)
                             <tr>
-                                <td>{{ $key + $states->firstItem() }}</td>
-                                <td>{{ $state->name }}</td>
-                                <td>{{ $state->short_name }}</td>
-                                <td>{{ $state->code }}</td>
-                                <td>{{ $state->country?->name }}</td>
+                                <td>{{ $key + $productImgs->firstItem() }}</td>
+                                <td>{{ $productImg->image }}</td>
+                                <td>{{ $productImg->product?->name }}</td> 
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('admin.state.edit', $state) }}">Edit</a>
+                                    <a href="{{ route('admin.productimg.edit', $productImg) }}" class="btn btn-sm btn-primary">Edit</a>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn"
-                                        data-href="{{ route('admin.state.destroy', $state) }}">
+                                        data-href="{{ route('admin.productimg.destroy', $productImg) }}">
                                         Remove
                                     </button>
                                 </td>
@@ -41,7 +37,7 @@
                 </table>
             </div>
             <div> 
-                {{$states->links()}}
+                {{$productImgs->links()}}
             </div>
         </div>
     </div>

@@ -7,31 +7,27 @@
 </form>
 <div class="card">
     <div class="card-body">
-        <h1>View City</h1>
+        <h1>View Pincode</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-stripped">
                 <thead>
                     <tr>
                         <th>S.No.</th>
-                        <th>Name</th>
-                        <th>Short Name</th>
                         <th>Code</th>
-                        <th>State</th>
+                        <th>City Name</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cities as $key => $city)
+                    @foreach ($pincodes as $key => $pincode)
                         <tr>
-                            <td>{{ $key + $cities->firstItem() }}</td>
-                            <td>{{ $city->name }}</td>
-                            <td>{{ $city->short_name }}</td>
-                            <td>{{ $city->code }}</td>
-                            <td>{{ $city->state?->name }}</td>
+                            <td>{{ $key + $pincodes->firstItem() }}</td>
+                            <td>{{ $pincode->code }}</td>
+                            <td>{{ $pincode->city?->name }}</td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="{{ route('admin.city.edit', $city) }}">Edit</a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('admin.pincode.edit', $pincode) }}">Edit</a>
                                 <button type="button" class="btn btn-danger btn-sm delete-btn"
-                                        data-href="{{ route('admin.city.destroy', $city) }}">
+                                        data-href="{{ route('admin.pincode.destroy', $pincode) }}">
                                         Remove
                                     </button>
                             </td>
@@ -41,7 +37,7 @@
             </table>
         </div>
         <div>
-            {{$cities->links()}}
+            {{$pincodes->links()}}
         </div>
     </div>
 </div>

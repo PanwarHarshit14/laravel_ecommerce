@@ -1,6 +1,10 @@
 @extends('admin.layouts.inner')
 
 @section('inner_section')
+<form action="" method="post" id="deleteForm">
+    @method('DELETE')
+    @csrf
+</form>
 <div class="card">
     <div class="card-body">
         <h1>View Category</h1>
@@ -22,9 +26,14 @@
                             <td>{{ $key + $categories->firstItem() }}</td>
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
+                            <td>{{ $category->Category_id }}</td>
                             <td>{{ $category->image }}</td>
                             <td>
-                                <a href="{{ route('admin.category.edit', $category) }}">Edit</a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('admin.category.edit', $category) }}">Edit</a>
+                                <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                data-href="{{ route('admin.category.destroy', $category) }}">
+                                Remove
+                            </button>
                             </td>
                         </tr>
                     @endforeach
@@ -38,3 +47,17 @@
 </div>
     
 @endsection
+
+
+@push('extra_scripts')
+    <script>
+        $(function() {
+            $(document).on("click", ".delete-btn", function() {
+                let action = $(this).data('href');
+
+                if (confirm("Are you sure delete this item?"))
+                    $('#deleteForm').attr('action', action).submit();
+            });
+        });
+    </script>
+@endpush

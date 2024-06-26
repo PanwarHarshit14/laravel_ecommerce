@@ -66,7 +66,7 @@ class CountryController
         $country->name = $request->name;
         $country->short_name = $request->short_name;
         $country->code = $request->code;
-        $country->flag = $request->flg;
+        $country->flag = $request->flag;
         $country->save();
 
         return redirect(route('admin.country.index'))->with('success', 'Success! A record has been updated.');

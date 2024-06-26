@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class ProductImg extends Model
 {
     use HasFactory;
 
-    public function state()
+    public function product()
     {
-        return $this->belongsTo(State::class);
+        return $this->belongsTo(Product::class);
     }
 }

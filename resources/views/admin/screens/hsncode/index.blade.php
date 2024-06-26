@@ -1,37 +1,34 @@
 @extends('admin.layouts.inner')
 
 @section('inner_section')
-<form action="" method="post" id="deleteForm">
-    @method('DELETE')
-    @csrf
-</form>
+    <form action="" method="post" id="deleteForm">
+        @method('DELETE')
+        @csrf
+    </form>
     <div class="card">
         <div class="card-body">
-            <h1>View State</h1>
+            <h1>View HSN Code</h1>
             <div class="table-responsive">
                 <table class="table table-bordered table-stripped">
                     <thead>
                         <tr>
                             <th>S.No.</th>
-                            <th>Name</th>
-                            <th>Short Name</th>
-                            <th>Code</th>
-                            <th>Country</th>
+                            <th>GST Number</th>
+                            <th>HSN Code</th>
                             <th></th>
                         </tr>
-                    </thead>
+                    </thead> 
                     <tbody>
-                        @foreach ($states as $key => $state)
+                        @foreach ($hsnCodes as $key => $hsnCode)
                             <tr>
-                                <td>{{ $key + $states->firstItem() }}</td>
-                                <td>{{ $state->name }}</td>
-                                <td>{{ $state->short_name }}</td>
-                                <td>{{ $state->code }}</td>
-                                <td>{{ $state->country?->name }}</td>
+                                <td>{{ $key + $hsnCodes->firstItem() }}</td>
+                                <td>{{ $hsnCode->gst }}</td>
+                                <td>{{ $hsnCode->code }}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('admin.state.edit', $state) }}">Edit</a>
+                                    <a href="{{ route('admin.hsncode.edit', $hsnCode) }}"
+                                        class="btn btn-primary btn-sm">Edit</a>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn"
-                                        data-href="{{ route('admin.state.destroy', $state) }}">
+                                    data-href="{{ route('admin.hsncode.destroy', $hsnCode) }}">
                                         Remove
                                     </button>
                                 </td>
@@ -40,8 +37,8 @@
                     </tbody>
                 </table>
             </div>
-            <div> 
-                {{$states->links()}}
+            <div>
+                {{ $hsnCodes->links() }}
             </div>
         </div>
     </div>

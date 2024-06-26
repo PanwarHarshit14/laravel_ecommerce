@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\HsnCode;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,7 +24,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-       return view('admin.screens.product.create');  
+        request()->flush();
+        $categories = Category::orderBy('name')->pluck('name', 'id');
+        $hsnCodes = HsnCode::orderBy('code')->pluck('code', 'id');
+       return view('admin.screens.product.create',compact('categories','hsnCodes'));  
     }
 
     /**
@@ -32,8 +37,8 @@ class ProductController extends Controller
     {
         $product = new Product();
         $product->name = $request->name;
-        // $product->hscode_id = $request->hscode_id;
-        // $product->category_id = $request->category_id;
+        $product->hsn_code_id = $request->hsn_code_id;
+        $product->category_id = $request->category_id;
         $product->image = $request->image;
         $product->reg_price = $request->reg_price;
         $product->trade_price = $request->trade_price;
@@ -57,7 +62,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admin.screens.product.edit');
+        request()->replace($product->toArray());
+        request()->flash();
+        $categories = Category::orderBy('name')->pluck('name', 'id');
+        $hsnCodes = HsnCode::orderBy('code')->pluck('code', 'id');
+        return view('admin.screens.product.edit',compact('product','categories','hsnCodes')); 
     }
 
     /**
@@ -66,8 +75,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->name = $request->name;
-        // $product->hscode_id = $request->hscode_id;
-        // $product->category_id = $request->category_id;
+        $product->hsn_code_id = $request->hsn_code_id;
+        $product->category_id = $request->category_id;
         $product->image = $request->image;
         $product->reg_price = $request->reg_price;
         $product->trade_price = $request->trade_price;
@@ -82,6 +91,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+         $product->delete();
+
+        return redirect(route('admin.product.index'))->with('success', 'Success! A record has been deleted.');
     }
 }

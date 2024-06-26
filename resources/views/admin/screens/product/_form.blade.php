@@ -1,9 +1,9 @@
-{{-- <div class="mb-3">
-    <label for="hsncode_id" class="form-label">Hsncode</label>
-    <select name="hsncode_id" class="form-select" id="hsncode_id">
+<div class="mb-3">
+    <label for="hsn_code_id" class="form-label">Hsncode</label>
+    <select name="hsn_code_id" class="form-select" id="hsn_code_id">
         <option value>Select Hsncode</option>
-        @foreach ($hsncodes as $id => $name)
-            <option value="{{ $id }}" {{ $id === old('hsncode_id') ? 'selected' : '' }}>{{ $name }}
+        @foreach ($hsnCodes as $id => $code)
+            <option value="{{ $id }}" {{ $id === old('hsn_code_id') ? 'selected' : '' }}>{{ $code }}
             </option>
         @endforeach
     </select>
@@ -17,7 +17,7 @@
             </option>
         @endforeach
     </select>
-</div> --}}
+</div>
 <div class="mb-3">
     <label for="name" class="form-label">Name</label>
     <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"

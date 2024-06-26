@@ -77,6 +77,8 @@ class CategoryController
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect(route('admin.category.index'))->with('success', 'Success! A record has been deleted.');
     }
 }

@@ -80,6 +80,23 @@ class AdminMenubar extends Component
                 ],
             ],
             [
+                'label' => 'Pincodes',
+                'url' => null,
+                'icon' => 'bi bi-globe',
+                'children' =>[
+                    [
+                        'label' => 'Add Pincode',
+                        'url' => route('admin.pincode.create'),
+                        'icon' => 'bi bi-database-add'
+                    ],
+                    [
+                        'label' => 'View Pincode',
+                        'url' => route('admin.pincode.index'),
+                        'icon' => 'bi bi-database-check'
+                    ],
+                ],
+            ],
+            [
                 'label' => 'Category',
                 'url' => null,
                 'icon' => 'bi bi-tags',
@@ -97,6 +114,23 @@ class AdminMenubar extends Component
                 ],
             ],
             [
+                'label' => 'HSN Code',
+                'url' => null,
+                'icon' => 'bi bi-bag',
+                'children' =>[
+                    [
+                        'label' => 'Add HSN Code',
+                        'url' => route('admin.hsncode.create'),
+                        'icon' => 'bi bi-database-add'
+                    ],
+                    [
+                        'label' => 'View HSN Code',
+                        'url' => route('admin.hsncode.index'),
+                        'icon' => 'bi bi-database-check'
+                    ],
+                ],
+            ],
+            [
                 'label' => 'Product',
                 'url' => null,
                 'icon' => 'bi bi-bag',
@@ -109,6 +143,23 @@ class AdminMenubar extends Component
                     [
                         'label' => 'View Product',
                         'url' => route('admin.product.index'),
+                        'icon' => 'bi bi-database-check'
+                    ],
+                ],
+            ],
+            [
+                'label' => 'Product Images',
+                'url' => null,
+                'icon' => 'bi bi-bag',
+                'children' =>[
+                    [
+                        'label' => 'Add Product Images',
+                        'url' => route('admin.productimg.create'),
+                        'icon' => 'bi bi-database-add'
+                    ],
+                    [
+                        'label' => 'View Product Images',
+                        'url' => route('admin.productimg.index'),
                         'icon' => 'bi bi-database-check'
                     ],
                 ],
