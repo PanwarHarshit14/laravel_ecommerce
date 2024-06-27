@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -11,9 +11,14 @@ class CountryController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $countries = Country::latest()->paginate(10);
+        $query  = Country::query();
+        if (!empty($request->search)) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
+        }
+        $countries = $query->latest()->paginate(10);
         return view('admin.screens.country.index', compact('countries'));
     }
 
@@ -34,7 +39,7 @@ class CountryController
         $country->name = $request->name;
         $country->short_name = $request->short_name;
         $country->code = $request->code;
-        $country->flag;
+        $country->flag = $request->flag->store("countries", "public");
         $country->save();
 
         return redirect(route('admin.country.index'))->with('success', 'Success! A new record has been added.');
@@ -66,7 +71,13 @@ class CountryController
         $country->name = $request->name;
         $country->short_name = $request->short_name;
         $country->code = $request->code;
-        $country->flag = $request->flag;
+        if (!empty($request->hasFile('flag'))) {
+            if (!empty($country->flag)) {
+                // To Remove Image from folder
+                unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+            }
+            $country->flag = $request->flag->store("countries", "public");
+        }
         $country->save();
 
         return redirect(route('admin.country.index'))->with('success', 'Success! A record has been updated.');
@@ -77,8 +88,12 @@ class CountryController
      */
     public function destroy(Country $country)
     {
+        if (!empty($country->flag)) {
+            // To Remove Image from folder
+            unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+        }
         $country->delete();
 
-        return redirect(route('admin.country.index'))->with('success', 'Success! A record has been deleted.');
+        return redirect()->back()->with('success', 'Success! A record has been deleted.');
     }
 }

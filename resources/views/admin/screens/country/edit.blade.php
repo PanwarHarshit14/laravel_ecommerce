@@ -8,7 +8,7 @@
             <b>Edit Country</b>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.country.update', $country) }}" method="POST">
+            <form action="{{ route('admin.country.update', $country) }}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 @include('admin.screens.country._form')

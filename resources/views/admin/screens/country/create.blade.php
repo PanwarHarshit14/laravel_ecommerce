@@ -8,7 +8,7 @@
             <b>Add New Country</b>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.country.store') }}" method="POST">
+            <form action="{{ route('admin.country.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @include('admin.screens.country._form')
 
