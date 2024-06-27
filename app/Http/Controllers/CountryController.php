@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -15,10 +15,9 @@ class CountryController
     {
         $query  = Country::query();
         if (!empty($request->search)) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
+            $query->where('name', 'LIKE', '%'. $request->search .'%')->orWhere('short_name', 'LIKE', '%'. $request->search .'%');
         }
-        $countries = $query->latest()->paginate(10);
+        $countries = Country::latest()->paginate(10);
         return view('admin.screens.country.index', compact('countries'));
     }
 
@@ -27,6 +26,7 @@ class CountryController
      */
     public function create()
     {
+        request()->flush();
         return view('admin.screens.country.create');
     }
 
@@ -71,10 +71,9 @@ class CountryController
         $country->name = $request->name;
         $country->short_name = $request->short_name;
         $country->code = $request->code;
-        if (!empty($request->hasFile('flag'))) {
-            if (!empty($country->flag)) {
-                // To Remove Image from folder
-                unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+        if(!empty($request->hasFile('flag'))){
+            if(!empty($country->flag)){
+                unlink(public_path() ."/storage/". $country->getRawOriginal('flag'));
             }
             $country->flag = $request->flag->store("countries", "public");
         }
@@ -88,9 +87,9 @@ class CountryController
      */
     public function destroy(Country $country)
     {
-        if (!empty($country->flag)) {
-            // To Remove Image from folder
-            unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+        if(!empty($country->flag)){
+            // Remove from the folder
+            unlink(public_path() ."/storage/". $country->getRawOriginal('flag'));
         }
         $country->delete();
 

@@ -14,11 +14,11 @@
         value="{{ old('code') }}" autocomplete="off">
 </div>
 @if (!empty($country->flag))
-    <div>
-        <img src="{{ $country->flag }}" alt="">
+    <div class="col-1 my-3">
+        <img src="{{ $country->flag }}" alt="" class="img-fluid">
     </div>
 @endif
 <div class="input-group mb-3">
-    <input type="file" name="flag" class="form-control" id="inputGroupFile02">
-    <label class="input-group-text" for="inputGroupFile02">Flag</label>
-</div>
+    <input type="file" name="flag" class="form-control" id="flag">
+    <label class="input-group-text" for="flag">Flag</label>
+  </div>

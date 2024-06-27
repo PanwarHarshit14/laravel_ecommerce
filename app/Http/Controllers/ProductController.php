@@ -13,8 +13,12 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Product::query();
+        if (!empty($request->search)) {
+            $query->where('name', 'LIKE', '%'. $request->search .'%');
+        }
         $products = Product::latest()->paginate(10);
         return view('admin.screens.product.index', compact('products'));
     }
@@ -39,7 +43,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->hsn_code_id = $request->hsn_code_id;
         $product->category_id = $request->category_id;
-        $product->image = $request->image;
+        $product->image = $request->image->store("products", "public");
         $product->reg_price = $request->reg_price;
         $product->trade_price = $request->trade_price;
         $product->discount = $request->discount;
@@ -54,7 +58,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        // 
     }
 
     /**
@@ -77,7 +81,12 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->hsn_code_id = $request->hsn_code_id;
         $product->category_id = $request->category_id;
-        $product->image = $request->image;
+        if(!empty($request->hasFile('image'))){
+            if(!empty($product->image)){
+                unlink(public_path() ."/storage/". $product->getRawOriginal('image'));
+            }
+            $product->image = $request->image->store("products", "public");
+        }
         $product->reg_price = $request->reg_price;
         $product->trade_price = $request->trade_price;
         $product->discount = $request->discount;
@@ -91,8 +100,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if(!empty($product->image)){
+            // Remove from the folder
+            unlink(public_path() ."/storage/". $product->getRawOriginal('image'));
+        }
          $product->delete();
 
-        return redirect(route('admin.product.index'))->with('success', 'Success! A record has been deleted.');
+        return redirect()->back()->with('success', 'Success! A record has been deleted.');
     }
 }

@@ -5,15 +5,14 @@
         @method('DELETE')
         @csrf
     </form>
-
+    
     <div class="card mb-3">
         <div class="card-body">
             <form action="">
-
                 <div class="row align-items-end g-1">
                     <div class="col-sm-3">
                         <label for="search" class="form-label">Search By Name</label>
-                        <input name="search" type="search" class="form-control" placeholder="Search..."
+                        <input name="search" type="search" autocomplete="off" class="form-control" placeholder="Search..."
                             value="{{ request('search') }}">
                     </div>
                     <div class="col-sm-3">
@@ -23,7 +22,7 @@
             </form>
         </div>
     </div>
-
+    
     <div class="card">
         <div class="card-body">
             <h1>View Country</h1>
@@ -47,7 +46,7 @@
                                 <td>{{ $country->short_name }}</td>
                                 <td>{{ $country->code }}</td>
                                 <td>
-                                    <img src="{{ $country->flag }}" alt="" style="width: 128px;">
+                                    <img src="{{ $country->flag }}" alt="{{ $country->name }}" style=" width: 5rem; height:5rem">
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.country.edit', $country) }}"

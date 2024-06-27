@@ -14,12 +14,12 @@
                         <tr>
                             <th>S.No.</th>
                             <th>Name</th>
-                            <th>Image</th>
                             <th>Hsn Code</th>
                             <th>Category</th>
                             <th>Reg Price</th>
                             <th>Trade Price</th>
                             <th>Discount</th>
+                            <th>Image</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -28,12 +28,14 @@
                             <tr>
                                 <td>{{ $key + $products->firstItem() }}</td>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->image }}</td>
                                 <td>{{ $product->hsncode?->code }}</td> 
                                 <td>{{ $product->category?->name}}</td>
                                 <td>{{ $product->reg_price }}</td>
                                 <td>{{ $product->trade_price }}</td>
                                 <td>{{ $product->discount }}</td>
+                                <td>
+                                    <img src="{{ $product->image }}" alt="{{ $product->image }}" style=" width: 5rem; height:5rem">
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.product.edit', $product) }}" class="btn btn-sm btn-primary">Edit</a>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn"

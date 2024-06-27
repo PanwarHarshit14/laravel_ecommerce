@@ -8,7 +8,7 @@
             <b>Edit Product</b> 
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.product.update', $product) }}" method="POST">
+            <form action="{{ route('admin.product.update', $product) }}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 @include('admin.screens.product._form')

@@ -24,21 +24,26 @@
         placeholder="Enter Here" autocomplete="off">
 </div>
 <div class="mb-3">
-    <label for="image" class="form-label">Image</label>
-    <input class="form-control" type="file" name="image" id="image">
-  </div>
-<div class="mb-3">
     <label for="reg_price" class="form-label">Reg Price</label>
     <input type="number" name="reg_price" id="reg_price" class="form-control" placeholder="Enter Here"
-        value="{{ old('reg_price') }}" autocomplete="off">
+    value="{{ old('reg_price') }}" autocomplete="off">
 </div>
 <div class="mb-3">
     <label for="trade_price" class="form-label">Trade Price</label>
     <input type="number" name="trade_price" id="trade_price" class="form-control" placeholder="Enter Here"
-        value="{{ old('trade_price') }}" autocomplete="off">
+    value="{{ old('trade_price') }}" autocomplete="off">
 </div>
 <div class="mb-3">
     <label for="discount" class="form-label">Discount</label>
     <input type="number" name="discount" id="discount" class="form-control" placeholder="Enter Here"
-        value="{{ old('discount') }}" autocomplete="off">
+    value="{{ old('discount') }}" autocomplete="off">
 </div>
+@if (!empty($product->image))
+    <div class="col-1 my-3">
+        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid">
+    </div>
+@endif
+<div class="mb-3"> 
+    <label for="image" class="form-label">Image</label>
+    <input class="form-control" type="file" name="image" id="image"> 
+  </div>

@@ -9,6 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
+    public function getFlagAttribute($image)
+    {
+        return $image ? asset('storage/' . $image) : null;
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);
