@@ -6,15 +6,19 @@ use App\Models\City;
 use App\Http\Controllers\Controller;
 use App\Models\State;
 use Illuminate\Http\Request;
- 
+
 class CityController
 {
     /** 
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cities = City::latest()->paginate(10);
+        $query = City::query();
+        if (!empty($request->search)) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%')->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
+        }
+        $cities = $query->latest()->paginate(10);
         return view('admin.screens.city.index', compact('cities'));
     }
 
@@ -41,7 +45,7 @@ class CityController
 
         return redirect(route('admin.city.index'))->with('success', 'Success! A new record has been added.');
     }
- 
+
     /**
      * Display the specified resource.
      */
@@ -82,6 +86,16 @@ class CityController
     {
         $city->delete();
 
-        return redirect(route('admin.city.index'))->with('success', 'Success! A record has been deleted.');
+        return redirect()->back()->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $city = City::find($id);
+            $city->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }

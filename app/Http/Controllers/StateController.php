@@ -13,9 +13,13 @@ class StateController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $states = State::latest()->paginate(10);
+        $query = State::query();
+        if (!empty($request->search)) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%')->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
+        }
+        $states = $query->latest()->paginate(10);
         return view('admin.screens.state.index', compact('states'));
     }
 
@@ -58,13 +62,13 @@ class StateController
     {
         request()->replace($state->toArray());
         request()->flash();
-        $countries = Country::orderBy('name')->pluck('name','id');
-        return view('admin.screens.state.edit', compact('state','countries'));
+        $countries = Country::orderBy('name')->pluck('name', 'id');
+        return view('admin.screens.state.edit', compact('state', 'countries'));
     }
 
     /**
      * Update the specified resource in storage.
-     */ 
+     */
     public function update(Request $request, State $state)
     {
         $state->name = $request->name;
@@ -84,5 +88,15 @@ class StateController
         $state->delete();
 
         return redirect(route('admin.state.index'))->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $state = State::find($id);
+            $state->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }
