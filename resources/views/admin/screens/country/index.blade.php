@@ -27,7 +27,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <h1>View Country</h1>
-                <div class="d-none bulk-actions">
+                <div class="d-none bulk-actions">x
                     <button type="button" class="btn btn-outline-danger btn-sm bulk-delete-btn">
                         <i class="bi bi-trash"></i> Remove Bulk
                     </button>
