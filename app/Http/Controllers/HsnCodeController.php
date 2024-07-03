@@ -11,9 +11,13 @@ class HsnCodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $hsnCodes = HsnCode::latest()->paginate(10);
+        $query = HsnCode::query();
+        if (!empty($request->search)) {
+            $query->where('code', 'LIKE', '%' . $request->search . '%')->orWhere('gst', 'LIKE', '%' . $request->search . '%');
+        }
+        $hsnCodes = $query->latest()->paginate(10);
         return view('admin.screens.hsncode.index', compact('hsnCodes'));
     }
 
@@ -77,5 +81,15 @@ class HsnCodeController extends Controller
         $hsnCode->delete();
 
         return redirect(route('admin.hsncode.index'))->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $hsnCode = HsnCode::find($id);
+            $hsnCode->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }

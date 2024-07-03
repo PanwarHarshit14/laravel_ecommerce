@@ -6,7 +6,7 @@ use App\Models\City;
 use App\Http\Controllers\Controller;
 use App\Models\State;
 use Illuminate\Http\Request;
-
+ 
 class CityController
 {
     /** 
@@ -45,7 +45,7 @@ class CityController
 
         return redirect(route('admin.city.index'))->with('success', 'Success! A new record has been added.');
     }
-
+ 
     /**
      * Display the specified resource.
      */
@@ -86,7 +86,7 @@ class CityController
     {
         $city->delete();
 
-        return redirect()->back()->with('success', 'Success! A record has been deleted.');
+        return redirect(route('admin.city.index'))->with('success', 'Success! A record has been deleted.');
     }
 
     public function bulkDelete(Request $request)

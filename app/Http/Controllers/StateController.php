@@ -16,7 +16,7 @@ class StateController
     public function index(Request $request)
     {
         $query = State::query();
-        if (!empty($request->search)) {
+        if(!empty($request->search)){
             $query->where('name', 'LIKE', '%' . $request->search . '%')->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
         }
         $states = $query->latest()->paginate(10);
@@ -28,6 +28,7 @@ class StateController
      */
     public function create()
     {
+        request()->flush();
         $countries = Country::orderBy('name')->pluck('name', 'id');
         return view('admin.screens.state.create', compact('countries'));
     }
@@ -62,13 +63,13 @@ class StateController
     {
         request()->replace($state->toArray());
         request()->flash();
-        $countries = Country::orderBy('name')->pluck('name', 'id');
-        return view('admin.screens.state.edit', compact('state', 'countries'));
+        $countries = Country::orderBy('name')->pluck('name','id');
+        return view('admin.screens.state.edit', compact('state','countries'));
     }
 
     /**
      * Update the specified resource in storage.
-     */
+     */ 
     public function update(Request $request, State $state)
     {
         $state->name = $request->name;
@@ -90,6 +91,9 @@ class StateController
         return redirect(route('admin.state.index'))->with('success', 'Success! A record has been deleted.');
     }
 
+    /**
+     * Select Delete Feature
+     */
     public function bulkDelete(Request $request)
     {
         foreach ($request->delIds as $id) {

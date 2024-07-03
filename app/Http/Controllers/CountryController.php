@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -14,7 +14,7 @@ class CountryController
     public function index(Request $request)
     {
         $query = Country::query();
-        if (!empty($request->search)) {
+        if(!empty($request->search)){
             $query->where('name', 'LIKE', '%' . $request->search . '%')->orWhere('short_name', 'LIKE', '%' . $request->search . '%');
         }
         $countries = $query->latest()->paginate(10);
@@ -71,9 +71,9 @@ class CountryController
         $country->name = $request->name;
         $country->short_name = $request->short_name;
         $country->code = $request->code;
-        if (!empty($request->hasFile('flag'))) {
-            if (!empty($country->flag) && file_exists(public_path() . "/storage/" . $country->getRawOriginal('flag'))) {
-                unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+        if(!empty($request->hasFile('flag'))){
+            if(!empty($country->flag)){
+                unlink(public_path() ."/storage/". $country->getRawOriginal('flag'));
             }
             $country->flag = $request->flag->store("countries", "public");
         }
@@ -87,9 +87,9 @@ class CountryController
      */
     public function destroy(Country $country)
     {
-        if (!empty($country->flag)) {
+        if(!empty($country->flag)){
             // Remove from the folder
-            unlink(public_path() . "/storage/" . $country->getRawOriginal('flag'));
+            unlink(public_path() ."/storage/". $country->getRawOriginal('flag'));
         }
         $country->delete();
 
@@ -100,8 +100,8 @@ class CountryController
     {
         foreach ($request->delIds as $id) {
             $country = Country::find($id);
-            $file = public_path() . "/storage/" . $country->getRawOriginal('flag');
-            if (!empty($country->flag) && file_exists($file)) {
+            $file = unlink(public_path() ."/storage/". $country->getRawOriginal('flag'));
+            if(!empty($country->flag && file_exists($file))){
                 unlink($file);
             }
             $country->delete();

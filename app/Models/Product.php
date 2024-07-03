@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function getFlagAttribute($image)
+    public function getImageAttribute($image)
     {
         return $image ? asset('storage/' . $image) : null;
     }

@@ -11,9 +11,13 @@ class CategoryController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(10);
+        $query = Category::query();
+        if (!empty($request->search)) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+        $categories = $query->latest()->paginate(10);
         return view('admin.screens.category.index', compact('categories'));
     }
 
@@ -22,7 +26,8 @@ class CategoryController
      */
     public function create()
     {
-        return view('admin.screens.category.create');
+        $categories = Category::orderBy('name')->pluck('name', 'id');
+        return view('admin.screens.category.create', compact('categories')); 
     }
 
     /**
@@ -34,7 +39,7 @@ class CategoryController
         $category->name = $request->name;
         $category->description = $request->description;
         $category->image = $request->image;
-        // $category->category_id = $request->category_id;
+        $category->category_id = $request->category_id;
         $category->save();
 
         return redirect(route('admin.category.index'))->with('success', 'Success! A new record has been added.');
@@ -55,7 +60,8 @@ class CategoryController
     {
         request()->replace($category->toArray());
         request()->flash();
-        return view('admin.screens.category.edit', compact('category'));
+        $categories = Category::orderBy('name')->pluck('name', 'id');
+        return view('admin.screens.category.edit', compact('category','categories'));
     }
 
     /**
@@ -66,7 +72,7 @@ class CategoryController
         $category->name = $request->name;
         $category->description = $request->description;
         $category->image = $request->image;
-        // $category->category_id = $request->category_id;
+        $category->category_id = $request->category_id;
         $category->save();
 
         return redirect(route('admin.category.index'))->with('success', 'Success! A record has been updated.');
@@ -79,6 +85,16 @@ class CategoryController
     {
         $category->delete();
 
-        return redirect(route('admin.category.index'))->with('success', 'Success! A record has been deleted.');
+        return redirect()->back()->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $category = Category::find($id);
+            $category->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }

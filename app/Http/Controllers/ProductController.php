@@ -19,7 +19,7 @@ class ProductController extends Controller
         if (!empty($request->search)) {
             $query->where('name', 'LIKE', '%'. $request->search .'%');
         }
-        $products = Product::latest()->paginate(10);
+        $products = $query->latest()->paginate(10);
         return view('admin.screens.product.index', compact('products'));
     }
 
@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        request()->flush();
+        request()->flush(); 
         $categories = Category::orderBy('name')->pluck('name', 'id');
         $hsnCodes = HsnCode::orderBy('code')->pluck('code', 'id');
        return view('admin.screens.product.create',compact('categories','hsnCodes'));  
@@ -82,10 +82,10 @@ class ProductController extends Controller
         $product->hsn_code_id = $request->hsn_code_id;
         $product->category_id = $request->category_id;
         if(!empty($request->hasFile('image'))){
-            if(!empty($product->image)){
-                unlink(public_path() ."/storage/". $product->getRawOriginal('image'));
+            if(!empty($product->image) && file_exists(public_path() . "/storage/" . $product->getRawOriginal('image'))){
+                unlink(public_path() . "/storage/" . $product->getRawOriginal('image'));
             }
-            $product->image = $request->image->store("products", "public");
+            $product->image = $request->image->store("products","public");
         }
         $product->reg_price = $request->reg_price;
         $product->trade_price = $request->trade_price;
@@ -107,5 +107,19 @@ class ProductController extends Controller
          $product->delete();
 
         return redirect()->back()->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $product = Product::find($id);
+            $file = unlink(public_path() ."/storage/". $product->getRawOriginal('image'));
+            if(!empty($product->image && file_exists($file))){
+                unlink($file);
+            }
+            $product->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }

@@ -12,9 +12,13 @@ class PincodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pincodes = Pincode::latest()->paginate(10);
+        $query = Pincode::query();
+        if (!empty($request->search)) {
+            $query->where('code', 'LIKE', '%' . $request->search . '%');
+        }
+        $pincodes = $query->latest()->paginate(10);
         return view('admin.screens.pincode.index', compact('pincodes'));
     }
 
@@ -79,5 +83,15 @@ class PincodeController extends Controller
         $pincode->delete();
 
         return redirect(route('admin.pincode.index'))->with('success', 'Success! A record has been deleted.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        foreach ($request->delIds as $id) {
+            $pincode = Pincode::find($id);
+            $pincode->delete();
+        }
+
+        return redirect()->back()->with('success', 'Success! Selected record(s) has been deleted.');
     }
 }

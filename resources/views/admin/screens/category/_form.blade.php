@@ -1,5 +1,5 @@
-{{-- <div class="mb-3">
-  <label for="category_id" class="form-label">Country</label>
+<div class="mb-3">
+  <label for="category_id" class="form-label">Category</label>
   <select name="category_id" class="form-select" id="category_id">
       <option value>Select Country</option>
       @foreach ($categories as $id => $name)
@@ -7,7 +7,7 @@
           </option>
       @endforeach
   </select>
-</div> --}}
+</div>
 <div class="mb-3">
     <label for="name" class="form-label">Name</label>
     <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"

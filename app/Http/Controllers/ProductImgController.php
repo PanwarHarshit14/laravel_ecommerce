@@ -79,6 +79,6 @@ class ProductImgController extends Controller
     {
         $productImg->delete();
 
-        return redirect(route('admin.productimg.index'))->with('success', 'Success! A record has been deleted.');
+        return redirect()->back()->with('success', 'Success! A record has been deleted.');
     }
 }
