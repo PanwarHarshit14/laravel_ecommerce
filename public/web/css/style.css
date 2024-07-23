@@ -28,7 +28,7 @@
     padding: .5em 1em;
     color: var(--secondary-color);
 }
-.dropdown_mega .dropdown-menu li:first-child a{
+.dropdown_mega .dropdown-menu > ul > li > a {
     font-weight: bold;
     font-size: 1rem;
     color: var(--primary-color);
